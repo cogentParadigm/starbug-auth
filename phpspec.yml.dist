@@ -1,0 +1,4 @@
+suites:
+  default:
+    namespace: Starbug\Auth
+    psr4_prefix: Starbug\Auth

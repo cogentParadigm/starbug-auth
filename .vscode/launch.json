@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Listen for XDebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9000
+    },
+    {
+      "name": "Listen for XDebug (Docker)",
+      "type": "php",
+      "request": "launch",
+      "port": 9000,
+      "pathMappings": {
+        "/var/www/html": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "PHPUnit",
+      "type": "php",
+      "request": "launch",
+      "program": "${workspaceRoot}/vendor/phpunit/phpunit/phpunit",
+      "cwd": "${workspaceRoot}"
+    }
+  ]
+}

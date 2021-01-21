@@ -1,0 +1,27 @@
+{
+  "name": "starbug/auth",
+  "description": "Authentication layer for Starbug framework.",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Ali Gangji",
+      "homepage": "https://github.com/cogentParadigm"
+    }
+  ],
+  "require": {
+    "psr/http-message": "^1.0"
+  },
+  "require-dev": {
+    "starbug/devel": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Starbug\\Auth\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Starbug\\Auth\\Tests\\": "tests/"
+    }
+  }
+}
