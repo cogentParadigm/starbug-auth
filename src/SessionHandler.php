@@ -21,6 +21,8 @@ class SessionHandler implements SessionHandlerInterface {
    */
   protected $sessions;
 
+  protected $hooks = [];
+
   public function __construct(SessionStorageInterface $sessions, IdentityRepositoryInterface $users) {
     $this->sessions = $sessions;
     $this->users = $users;
@@ -29,7 +31,9 @@ class SessionHandler implements SessionHandlerInterface {
    * {@inheritdoc}
    */
   public function startSession(): ?SessionInterface {
-    return $this->session = $this->sessions->load();
+    $this->session = $this->sessions->load();
+    $this->invokeHooks("startSession", [$this]);
+    return $this->session;
   }
   /**
    * {@inheritdoc}
@@ -39,6 +43,7 @@ class SessionHandler implements SessionHandlerInterface {
     if ($activate) {
       $this->setSession($session);
     }
+    $this->invokeHooks("createSession", [$this, $session, $persist, $activate]);
     return $session;
   }
   /**
@@ -63,6 +68,7 @@ class SessionHandler implements SessionHandlerInterface {
   public function destroy() {
     $this->sessions->destroy($this->session);
     $this->session = null;
+    $this->invokeHooks("destroy", [$this]);
   }
   /**
    * {@inheritdoc}
@@ -109,6 +115,16 @@ class SessionHandler implements SessionHandlerInterface {
       return $this->session
         ->getIdentity()
         ->getData($property);
+    }
+  }
+
+  public function addHook(SessionHandlerHook $hook) {
+    $this->hooks[] = $hook;
+  }
+
+  protected function invokeHooks($method, $args) {
+    foreach ($this->hooks as $hook) {
+      call_user_func_array([$hook, $method], $args);
     }
   }
 }

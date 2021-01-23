@@ -1,18 +1,11 @@
 <?php
 namespace Starbug\Auth\Http;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Starbug\Auth\SessionExchangeInterface;
 use Starbug\Auth\SessionInterface;
 use Starbug\Auth\SessionRepositoryInterface;
 
 class CookieSessionExchange implements SessionExchangeInterface {
-  /**
-   * Server request to retrieve cookies sent from client.
-   *
-   * @var ServerRequestInterface
-   */
-  protected $request;
   /**
    * Cookie path.
    *
@@ -25,10 +18,10 @@ class CookieSessionExchange implements SessionExchangeInterface {
    * @var string
    */
   protected $key;
-  public function __construct(ServerRequestInterface $request, $path, $key) {
-    $this->request = $request;
-    $this->path = $path;
+
+  public function __construct($key, $path = "/") {
     $this->key = $key;
+    $this->path = $path;
   }
   /**
    * Saving the session means sending the cookie to client.
@@ -44,7 +37,7 @@ class CookieSessionExchange implements SessionExchangeInterface {
     ];
     $encoded = $this->encode($values);
     if (!headers_sent()) {
-      setcookie("sid", $encoded, $values['e'], $this->path, null, false, true);
+      setcookie("sid", $encoded, $values['e'], $this->path, null, true, true);
     }
   }
   /**
@@ -54,10 +47,12 @@ class CookieSessionExchange implements SessionExchangeInterface {
    *  Repository to obtain a valid Session object.
    *
    * @return SessionInterface|null
+   *
+   * @SuppressWarnings(PHPMD.Superglobals)
    */
   public function load(SessionRepositoryInterface $sessions): ?SessionInterface {
     // Obtain and parse session cookie.
-    $session = $this->request->getCookieParams()["sid"] ?? false;
+    $session = $_COOKIE["sid"] ?? false;
     $values = $this->decode($session);
     if ($values) {
       return $sessions->load($values["t"]);
@@ -69,7 +64,7 @@ class CookieSessionExchange implements SessionExchangeInterface {
    */
   public function destroy() {
     if (!headers_sent()) {
-      setcookie("sid", null, time(), $this->path, null, false, true);
+      setcookie("sid", null, time(), $this->path, null, true, true);
     }
   }
 

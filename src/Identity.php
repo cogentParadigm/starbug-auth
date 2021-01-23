@@ -46,7 +46,7 @@ class Identity implements IdentityInterface {
     if (false === $property) {
       return $this->data;
     }
-    return $this->data[$property];
+    return $this->data[$property] ?? null;
   }
 
   public function setData(array $data) {

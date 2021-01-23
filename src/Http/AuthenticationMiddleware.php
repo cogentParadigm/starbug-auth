@@ -19,7 +19,9 @@ class AuthenticationMiddleware implements MiddlewareInterface {
     $this->session = $session;
   }
   public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
-    $this->session->startSession();
-    return $handler->handle($request);
+    $session = $this->session->startSession();
+    return $handler->handle(
+      $request->withAttribute("session", $session)
+    );
   }
 }
