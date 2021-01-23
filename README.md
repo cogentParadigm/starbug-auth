@@ -95,3 +95,17 @@ $csrfHandler->checkRequestToken($_POST["csrfToken"]);
 // Obtain the request to include in a form.
 <input type="hidden" name="csrfToken" value="<?php echo $csrfHandler->getRequestToken(); ?>"/>
 ```
+
+## PSR-15 middlewares
+
+A PSR-15 middleware is included to start the session. Pass it the session handler.
+
+```php
+$sessionMiddleware = new Starbug\Auth\Http\AuthenticationMiddleware($sessionHandler);
+```
+
+A PSR-15 middleware is also included for CSRF handling. Pass it the CSRF handler.
+
+```php
+$csrfMiddleware = new Starbug\Auth\Http\CsrfMiddleware($csrfHandler);
+```
