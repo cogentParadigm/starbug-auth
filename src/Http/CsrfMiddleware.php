@@ -24,9 +24,12 @@ class CsrfMiddleware implements MiddlewareInterface {
   }
   public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
     if (in_array($request->getMethod(), ["PUT", "POST", "DELETE"])) {
-      if (!$this->csrf->checkRequestToken($request->getParsedBody()[$this->formKey] ?? "")) {
+      $body = $request->getParsedBody();
+      if (!$this->csrf->checkRequestToken($body[$this->formKey] ?? "")) {
         throw new Exception("Could not authenticate request.");
       }
+      unset($body[$this->formKey]);
+      $request = $request->withParsedBody($body);
     }
     return $handler->handle($request);
   }
