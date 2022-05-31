@@ -25,6 +25,7 @@ class CookieCsrfExchange implements CsrfExchangeInterface {
   public function save($token) {
     if (!headers_sent()) {
       setcookie("oid", $token, time() + $this->duration, $this->path, null, true, false);
+      $_COOKIE["oid"] = $token;
     }
   }
   /**
