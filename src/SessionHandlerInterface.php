@@ -52,7 +52,7 @@ interface SessionHandlerInterface {
    *
    * @param SessionInterface $session The session.
    */
-  public function setSession(SessionInterface $session);
+  public function setSession(?SessionInterface $session);
   /**
    * Check if a user is logged in. Session must be started first.
    *

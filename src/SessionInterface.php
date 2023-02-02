@@ -8,4 +8,6 @@ interface SessionInterface {
   public function setIdentity(IdentityInterface $userId);
   public function getExpirationDate();
   public function setExpirationDate($expirationDate);
+  public function getData($property = false);
+  public function setData($data = []);
 }

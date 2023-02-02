@@ -92,7 +92,7 @@ class SessionHandler implements SessionHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setSession(SessionInterface $session) {
+  public function setSession(?SessionInterface $session) {
     $this->session = $session;
   }
 

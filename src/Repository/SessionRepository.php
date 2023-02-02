@@ -50,7 +50,8 @@ class SessionRepository implements SessionRepositoryInterface {
       return new Session(
         $user,
         $session["token"],
-        $session["expires"]
+        $session["expires"],
+        $session
       );
     }
     return null;
