@@ -122,6 +122,12 @@ class SessionHandler implements SessionHandlerInterface {
     $this->hooks[] = $hook;
   }
 
+  public function addHooks($hooks) {
+    foreach ($hooks as $hook) {
+      $this->addHook($hook);
+    }
+  }
+
   protected function invokeHooks($method, $args) {
     foreach ($this->hooks as $hook) {
       call_user_func_array([$hook, $method], $args);
