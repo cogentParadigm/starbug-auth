@@ -10,7 +10,7 @@ use Starbug\Auth\SessionHandler;
 use Starbug\Auth\SessionStorageInterface;
 
 /**
- * Spec test for Starbug\Core\SessionHandler.
+ * Spec test for Starbug\Auth\SessionHandler.
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

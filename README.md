@@ -10,7 +10,7 @@ First you need to construct an instance of `Starbug\Auth\SessionHandler` which r
 
 ```php
 // The provided repository implementations require the Starbug database interface.
-$db = $container->get("Starbug\Core\DatabaseInterface");
+$db = $container->get("Starbug\Db\DatabaseInterface");
 
 // Now the good stuff.
 $idRepository = new Starbug\Auth\Repository\IdentityRepository($db);

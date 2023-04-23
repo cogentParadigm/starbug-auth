@@ -4,7 +4,7 @@ namespace Starbug\Auth\Repository;
 use Starbug\Auth\Identity;
 use Starbug\Auth\IdentityInterface;
 use Starbug\Auth\IdentityRepositoryInterface;
-use Starbug\Core\DatabaseInterface;
+use Starbug\Db\DatabaseInterface;
 
 class IdentityRepository implements IdentityRepositoryInterface {
   public function __construct(DatabaseInterface $db) {

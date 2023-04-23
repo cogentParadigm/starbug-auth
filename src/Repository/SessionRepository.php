@@ -5,7 +5,7 @@ use Starbug\Auth\IdentityRepositoryInterface;
 use Starbug\Auth\Session;
 use Starbug\Auth\SessionInterface;
 use Starbug\Auth\SessionRepositoryInterface;
-use Starbug\Core\DatabaseInterface;
+use Starbug\Db\DatabaseInterface;
 
 class SessionRepository implements SessionRepositoryInterface {
 
