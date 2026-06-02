@@ -17,7 +17,7 @@ interface SessionRepositoryInterface {
    *
    * @param string $token The session token.
    *
-   * @return array The session.
+   * @return ?SessionInterface The session, or null if not found.
    */
   public function load($token): ?SessionInterface;
 

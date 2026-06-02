@@ -32,9 +32,9 @@ interface SessionHandlerInterface {
    * @param array $user The user record, obtained from IdentityInterface.
    * @param string $password The users password entry.
    *
-   * @return boolean Returns false if validation fails. If the password validates, true is returned.
+   * @return ?IdentityInterface The user identity, if authenticated
    */
-  public function authenticate($user, $password);
+  public function authenticate($user, $password): ?IdentityInterface;
   /**
    * Destroy the session.
    *
@@ -58,7 +58,7 @@ interface SessionHandlerInterface {
    *
    * @param string|array $group A group or array of groups.
    *
-   * @return void
+   * @return boolean True if logged in
    */
   public function loggedIn($group = "");
   /**
