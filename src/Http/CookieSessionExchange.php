@@ -37,7 +37,15 @@ class CookieSessionExchange implements SessionExchangeInterface {
     ];
     $encoded = $this->encode($values);
     if (!headers_sent()) {
-      setcookie("sid", $encoded, $values['e'], $this->path, null, true, true);
+      // Use options array to include SameSite attribute.
+      setcookie("sid", $encoded, [
+        'expires' => $values['e'],
+        'path' => $this->path,
+        'domain' => null,
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Lax'
+      ]);
     }
   }
   /**
@@ -54,7 +62,7 @@ class CookieSessionExchange implements SessionExchangeInterface {
     // Obtain and parse session cookie.
     $session = $_COOKIE["sid"] ?? false;
     $values = $this->decode($session);
-    if ($values) {
+    if ($values && isset($values["t"])) {
       return $sessions->load($values["t"]);
     }
     return null;
@@ -64,7 +72,15 @@ class CookieSessionExchange implements SessionExchangeInterface {
    */
   public function destroy() {
     if (!headers_sent()) {
-      setcookie("sid", null, time(), $this->path, null, true, true);
+      // Expire the cookie in the past to ensure removal and keep same flags
+      setcookie("sid", "", [
+        'expires' => time() - 3600,
+        'path' => $this->path,
+        'domain' => null,
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Lax'
+      ]);
     }
   }
 
@@ -91,10 +107,17 @@ class CookieSessionExchange implements SessionExchangeInterface {
   protected function decode($session) {
     if (empty($session)) return false;
     parse_str($session, $values);
+    // Require a digest
+    if (!isset($values['d'])) return false;
     $digest = $values['d'];
     unset($values['d']);
-    // Validate cookie integrity.
-    if (hash_hmac("sha256", http_build_query($values), $this->key) != $digest) return false;
+    // Validate cookie integrity using timing-safe comparison
+    $payload = http_build_query($values);
+    $expected = hash_hmac("sha256", $payload, $this->key);
+    if (!hash_equals($expected, $digest)) return false;
+    // Basic expiry validation: must include numeric expiration and not be expired
+    if (!isset($values['e']) || !ctype_digit((string) $values['e'])) return false;
+    if ((int) $values['e'] < time()) return false;
     return $values;
   }
 }
