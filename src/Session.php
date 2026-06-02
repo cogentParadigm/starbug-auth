@@ -11,7 +11,7 @@ class Session implements SessionInterface {
   public function __construct(IdentityInterface $identity, $token, $expirationDate, $data = []) {
     $this->identity = $identity;
     $this->token = $token;
-    $this->expirationDate = $expirationDate;
+    $this->expirationDate = (int) $expirationDate;
     $this->data = $data;
   }
 
@@ -36,7 +36,7 @@ class Session implements SessionInterface {
   }
 
   public function setExpirationDate($expirationDate) {
-    $this->expirationDate = $expirationDate;
+    $this->expirationDate = (int) $expirationDate;
   }
 
   public function getData($property = false) {
