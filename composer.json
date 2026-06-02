@@ -8,6 +8,12 @@
       "homepage": "https://github.com/cogentParadigm"
     }
   ],
+  "extra": {
+    "starbug": {
+      "type": "module",
+      "namespace": "Starbug\\Auth"
+    }
+  },
   "require-dev": {
     "starbug/devel": "^1.0",
     "psr/http-message": "^1.0",
