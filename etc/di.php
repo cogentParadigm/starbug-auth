@@ -1,11 +1,8 @@
 <?php
 namespace Starbug\Auth;
 
-use function DI\add;
 use function DI\autowire;
 use function DI\get;
-use Starbug\Auth\Helper\CsrfHelper;
-use Starbug\Auth\Helper\SessionHelper;
 
 return [
   "session_handler.hooks" => [
@@ -21,9 +18,5 @@ return [
     ->constructorParameter("path", get("website_url")),
   "Starbug\Auth\*Interface" => autowire("Starbug\Auth\*"),
   "Starbug\Auth\Http\CsrfHandlerInterface" => autowire("Starbug\Auth\Http\CsrfHandler")
-    ->constructorParameter("key", get("hmac_key")),
-  "template.helpers" => add([
-    "csrf" => CsrfHelper::class,
-    "session" => SessionHelper::class
-  ])
+    ->constructorParameter("key", get("hmac_key"))
 ];
